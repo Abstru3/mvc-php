@@ -1,0 +1,11 @@
+Vulnérabilité aux injections SQL :
+Problème : Utilisation de requêtes non préparées.
+Exemple : Un utilisateur peut manipuler les entrées pour exécuter des requêtes SQL malveillantes.
+
+Manque de validation des données :
+Problème : Absence de validation pour les entrées utilisateur.
+Exemple : Risque d'injection de code HTML ou de scripts
+
+Erreur dans la gestion des tableaux :
+Problème : Réinitialisation incorrecte du tableau $post dans la boucle.
+Exemple : La ligne $post = [...] écrase le tableau à chaque itération, provoquant une perte de données.
