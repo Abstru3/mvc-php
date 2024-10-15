@@ -9,19 +9,18 @@ function getPosts() {
     
     // Récupération des 5 derniers billets
     $statement = $database->query(
-        "SELECT id, titre, contenu, DATE_FORMAT(date_creation, '%d/%m/%Y à %Hh%imin%ss') AS date_creation_fr FROM billets ORDER BY date_creation DESC LIMIT 0, 5"
+        "SELECT id, title, content, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5"
     );
     
     $posts = [];
     while ($row = $statement->fetch()) {
         $post = [
-            'title' => $row['titre'],
-            'french_creation_date' => $row['date_creation_fr'],
-            'content' => $row['contenu'],
+            'title' => $row['title'],
+            'creation_date_fr' => $row['creation_date_fr'],
+            'content' => $row['content'],
         ];
         $posts[] = $post;
     }
     
     return $posts;
 }
-?>
