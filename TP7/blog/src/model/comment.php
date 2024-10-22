@@ -1,6 +1,5 @@
 <?php
-
-<<<<<<< HEAD
+// model/comments.php
 class Comment
 {
     public $author;
@@ -16,9 +15,6 @@ class Comment
 }
 
 function getComments(string $post): array
-=======
-function getComments(string $post)
->>>>>>> 1e7d5234d0d7d6f83326626b8c31af3a5e09b2dc
 {
     $database = commentDbConnect();
     $statement = $database->prepare(
@@ -27,20 +23,12 @@ function getComments(string $post)
     $statement->execute([$post]);
 
     $comments = [];
-    while (($row = $statement->fetch())) {
-<<<<<<< HEAD
+    while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
         $comment = new Comment(
             $row['author'],
             $row['french_creation_date'],
             $row['comment']
         );
-=======
-        $comment = [
-            'author' => $row['author'],
-            'french_creation_date' => $row['french_creation_date'],
-            'comment' => $row['comment'],
-        ];
->>>>>>> 1e7d5234d0d7d6f83326626b8c31af3a5e09b2dc
 
         $comments[] = $comment;
     }
@@ -48,11 +36,7 @@ function getComments(string $post)
     return $comments;
 }
 
-<<<<<<< HEAD
 function createComment(string $post, string $author, string $comment): bool
-=======
-function createComment(string $post, string $author, string $comment)
->>>>>>> 1e7d5234d0d7d6f83326626b8c31af3a5e09b2dc
 {
     $database = commentDbConnect();
     $statement = $database->prepare(
@@ -63,13 +47,9 @@ function createComment(string $post, string $author, string $comment)
     return ($affectedLines > 0);
 }
 
-<<<<<<< HEAD
 function commentDbConnect(): PDO
-=======
-function commentDbConnect()
->>>>>>> 1e7d5234d0d7d6f83326626b8c31af3a5e09b2dc
 {
-    $database = new PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'blog', 'password');
+    $database = new PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'root', 'root');
 
     return $database;
 }

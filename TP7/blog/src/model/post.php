@@ -1,46 +1,60 @@
 <?php
+// src/model/post.php
 
-class Post
+class Post {
+    public $title;
+    public $frenchCreationDate;
+    public $content;
+    public $identifier;
+}
+
+class PostRepository
 {
-    public string $title;
-    public string $content;
-    public string $author;
-    public string $frenchCreationDate;
+    public $database = null;
 
-    public function __construct(string $title, string $content, string $author, string $frenchCreationDate)
+    public function getPosts()
     {
-        $this->title = $title;
-        $this->content = $content;
-        $this->author = $author;
-        $this->frenchCreationDate = $frenchCreationDate;
+        $this->dbConnect();
+        $statement = $this->database->query("SELECT id, title, content, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM posts");
+        
+        $posts = [];
+        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $post = new Post();
+            $post->title = $row['title'];
+            $post->frenchCreationDate = $row['french_creation_date'];
+            $post->content = $row['content'];
+            $post->identifier = $row['id'];
+            $posts[] = $post;
+        }
+
+        return $posts;
     }
-}
 
-function getPosts(): array
-{
-    $database = postDbConnect();
-    $statement = $database->query(
-        "SELECT title, content, author, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM posts ORDER BY creation_date DESC"
-    );
-
-    $posts = [];
-    while (($row = $statement->fetch())) {
-        $post = new Post(
-            $row['title'],
-            $row['content'],
-            $row['author'],
-            $row['french_creation_date']
+    public function getPost($identifier)
+    {
+        $this->dbConnect();
+        $statement = $this->database->prepare(
+            "SELECT id, title, content, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM posts WHERE id = ?"
         );
+        $statement->execute([$identifier]);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        
+        $post = new Post();
+        if ($row) {
+            $post->title = $row['title'];
+            $post->frenchCreationDate = $row['french_creation_date'];
+            $post->content = $row['content'];
+            $post->identifier = $row['id'];
+        }
 
-        $posts[] = $post;
+        return $post;
     }
 
-    return $posts;
-}
-
-function postDbConnect(): PDO
-{
-    $database = new PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'blog', 'password');
-
-    return $database;
+    private function dbConnect()
+    {
+        if ($this->database === null) {
+            $this->database = new PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'root', 'root');
+            $this->database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        }
+    }
 }
