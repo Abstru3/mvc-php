@@ -34,8 +34,13 @@
 <?php
 foreach ($comments as $comment) {
 ?>
+<<<<<<< HEAD
     <p><strong><?= htmlspecialchars($comment->author) ?></strong> le <?= $comment->frenchCreationDate ?></p>
     <p><?= nl2br(htmlspecialchars($comment->comment)) ?></p>
+=======
+    <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['french_creation_date'] ?></p>
+    <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
+>>>>>>> 1e7d5234d0d7d6f83326626b8c31af3a5e09b2dc
 <?php
 }
 ?>

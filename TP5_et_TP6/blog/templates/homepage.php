@@ -23,7 +23,12 @@
                 <?= nl2br(htmlspecialchars($post['content'])); ?>
                 <br />
                 <em>
+ HEAD
                 <a href="index.php?action=post&id=<?= urlencode($post['identifier']) ?> "> Commentaires
+
+                <a href="post.php?id=<?= urlencode($post['identifier']) ?> ">
+                Commentaires
+ 1e7d5234d0d7d6f83326626b8c31af3a5e09b2dc
                 </a></em>
                 </p>
             </div>
